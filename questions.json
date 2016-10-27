@@ -1,0 +1,44 @@
+{
+ "qbank" : [
+ {
+ "question":"How many colors does the nigeria flag have", 
+ "a" : "3", 
+ "b" : "4", 
+ "c" : "2", 
+ "d" : "1", 
+ "ans" : "2"
+ },
+ {
+ "question":"Which of the following is an operation system", 
+ "a" : "Doors", 
+ "b" : "lieman", 
+ "c" : "windows", 
+ "d" : "pebble", 
+ "ans" : "windows"
+ },
+ {
+ "question":"How many side does an octagon have", 
+ "a" : "7", 
+ "b" : "4", 
+ "c" : "2", 
+ "d" : "8", 
+ "ans" : "8"
+ },
+ {
+ "question":"Who is the first man on moon?", 
+ "a" : "Neil Armstrong", 
+ "b" : "Dolly Parton", 
+ "c" : "Jogn doe", 
+ "d" : "Moon walkman", 
+ "ans" : "Neil Armstrong"
+ },
+ {
+ "question":"Which of these languages is a client side language?", 
+ "a" : "Python", 
+ "b" : "Java", 
+ "c" : "Go", 
+ "d" : "Javascript", 
+ "ans" : "Javascript"
+ }
+ ]
+}

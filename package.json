@@ -1,0 +1,19 @@
+{
+  "name": "quizzapp",
+  "version": "1.0.0",
+  "description": "take quiz and view score",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/oforchinedu/QuizzRepo.git"
+  },
+  "author": "Ofor Chinedu",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/oforchinedu/QuizzRepo/issues"
+  },
+  "homepage": "https://github.com/oforchinedu/QuizzRepo#readme"
+}

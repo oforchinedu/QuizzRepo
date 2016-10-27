@@ -1,0 +1,396 @@
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="">
+<meta name="author" content="">
+<link href="asset/css/bootstrap.min.css" rel="stylesheet" >
+<link href="asset/css/fontawesome.min.css" rel="stylesheet" >
+<style>
+
+.text-center {
+	text-align: center;
+}
+
+.btn-padding {
+width:150px;
+}
+
+</style>
+<script src="https://www.gstatic.com/firebasejs/3.5.2/firebase.js"></script>
+<script src="asset/js/jquery.min.js"></script>
+<script src="asset/js/bootstrap.min.js"></script>
+<script>
+  //Chinedu please change this block alone, copy and paste your own config..
+  // Initialize Firebase 
+  /**
+  var config = {
+    apiKey: "AIzaSyB2yvR3uVJ3SjUkNvd1zRZA_YbChSBW3Ik",
+    authDomain: "jtest-c0841.firebaseapp.com",
+    databaseURL: "https://jtest-c0841.firebaseio.com",
+    storageBucket: "jtest-c0841.appspot.com",
+    messagingSenderId: "160951157849"
+  };
+  **/
+    var config = {
+    apiKey: "AIzaSyCNk38AfS4B8C_FmX6txiKBzu8ZmMDS700",
+    authDomain: "jtest-acbf9.firebaseapp.com",
+    databaseURL: "https://jtest-acbf9.firebaseio.com",
+    storageBucket: "jtest-acbf9.appspot.com",
+    messagingSenderId: "591164013151"
+  };
+  firebase.initializeApp(config);
+  // leave the rest.. update the code where u see fit
+</script>
+<script src="https://www.gstatic.com/firebasejs/ui/live/0.5/firebase-ui-auth.js"></script>
+    <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/live/0.5/firebase-ui-auth.css" />
+    <script type="text/javascript">
+      // FirebaseUI config.
+      var uiConfig = {
+        'signInSuccessUrl': '',
+        'signInOptions': [
+          // Leave the lines as is for the providers you want to offer your users.
+          firebase.auth.GoogleAuthProvider.PROVIDER_ID
+        ],
+        // Terms of service url.
+        'tosUrl': '',
+      };
+
+      // Initialize the FirebaseUI Widget using Firebase.
+      var ui = new firebaseui.auth.AuthUI(firebase.auth());
+      // The start method will wait until the DOM is loaded.
+      ui.start('#firebaseui-auth-container', uiConfig);
+	  var username = "";
+	  var email = "";
+	  
+	   initApp = function(){
+	   
+			firebase.auth().onAuthStateChanged(function(user) {
+          if (user) {
+            // User is signed in.
+			
+			$("#login:visible").toggle();
+			$("#loading:hidden").toggle();
+			
+            username = user.displayName;
+            email = user.email;
+			
+			fetchQuestions()
+			}else{
+				$("#login:hidden").toggle();
+			}
+		});
+	  }
+	  
+	  window.addEventListener('load',function(){
+			initApp();
+	  })
+	  
+	  function fetchQuestions(){
+	
+		
+		firebase.database().ref('/qbank').once('value').then(function(snap){
+		         var payLoad = JSON.stringify(snap.val());
+				 console.log(payLoad);
+				 startQuiz(snap.val());
+			});
+		
+	}
+	
+</script>
+</head>
+<body style="background-color:#eee">
+    <div class="container jumbotron" style="background-color:#fff;margin-top:100px" id="login">
+	<div class="row" >
+	   
+	   <div class="col-md-5 col-md-offset-3" >
+			
+	      <div class="panel panel-primary">		
+			<div class="panel-heading">LOGIN TO PROCEED</div>
+			<div class="panel-body">
+				<div id="firebaseui-auth-container"></div>
+			</div>
+	      </div>	
+		  
+	   </div>	
+		
+	   </div>
+	</div>
+	<div class="text-center" id="loading" style="display:none;margin:200px auto 0px auto; width: 100px;  background-color:#fff"><img src="asset/img/reload.gif" width="80px" height="80px" alt="loading..." /></div>
+	<div style="display:none" id="quiz">
+	<div class="container jumbotron" style="background-color:#fff;margin-top:100px"  >
+	
+	   <div class="text-center">
+	      <h2 style="margin-top:0;"> Quiz App version 1.0</h2>
+		  <hr />
+	   </div>
+	   
+	   <div class="row" >
+	      
+			<div class="col-md-8">
+			
+			    <div class="panel panel-default">
+				<div class="panel-body">
+				
+					<p>Question <span id="currentQuestion">0</span> of <span id="totalQuestion">0</span> </p>
+					
+					<div class="col-md-12 panel panel-default" id="q" style="min-height:100px">
+					   
+					</div>
+					
+					<div class="col-md-12"><b>A</b>&nbsp;<input type="radio" name="option" class="options" id="a" value=""  />&nbsp;&nbsp;<label for="a" id="label_a"></label></div>
+					<div class="col-md-12"><b>B</b>&nbsp;<input type="radio" name="option" class="options" id="b" value="" />&nbsp;&nbsp;<label for="b" id="label_b"></label></div>
+					
+					<div class="col-md-12"><b>C</b>&nbsp;<input type="radio" name="option" class="options" id="c" value="" />&nbsp;&nbsp;<label for="c" id="label_c"></label></div>
+					<div class="col-md-12"><b>D</b>&nbsp;<input type="radio" name="option" class="options" id="d" value="" />&nbsp;&nbsp;<label for="d" id="label_d"></label></div>
+					
+					<div class="clearfix" style="margin-bottom:20px"></div>
+					
+					<div class="col-md-6"><button class="btn btn-primary btn-lg btn-padding" id="btnPrev" onclick="prevQuestion()">Previous</button></div>
+					<div class="col-md-6"><button class="btn btn-primary btn-lg btn-padding" id="btnNext" onclick="nextQuestion()">Next</button></div>
+				
+				</div>
+				</div>	
+				
+			</div>
+			<div class="col-md-4 ">
+			
+				<div class="panel panel-primary">
+					<div class="panel-heading">
+					  Leader Board
+					</div>
+					<div class="panel-body">
+					
+						 <ul class="list-group" id="leaderBoard">
+							<!--<li class="list-group-item">Godson 100%</li>-->
+						</ul>
+						
+					</div>
+				</div>
+			
+			</div>
+		 
+	   </div>
+	  
+	
+	</div>
+	</div>
+	
+	
+	<!-- Modal -->
+<div id="QuizModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">QUIZ SCORE</h4>
+      </div>
+      <div class="modal-body">
+        <p id="msg"></p>
+		<p id="score"></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+	<script>
+	
+	var questionObject = null;
+	var pointer = 0;
+	var score = 0;
+	
+		$(document).ready(function(){
+		   
+		   $(".options").change(function(){
+		     saveAnswer($(this).val());
+		   });
+		})
+
+		function startQuiz(questions){
+		   
+		   questionObject = questions;
+		   
+		   $("#currentQuestion").html(pointer+1);
+		   $("#totalQuestion").html(questionObject.length);
+		   $("#loading:visible").toggle();
+		   $("#quiz:hidden").toggle();
+		   
+		   loadQuestion();
+		   
+		   getScoreBoard();
+		}
+		
+		function loadQuestion(){
+		    $("#currentQuestion").html(pointer+1);
+			
+			if(pointer == 0)
+			$("#btnPrev").prop("disabled",true);
+			else
+			$("#btnPrev").prop("disabled",false);
+			
+			$("#q").html(questionObject[pointer].question);
+			$("#a").val(questionObject[pointer].a);
+			$("#label_a").text(questionObject[pointer].a);
+			$("#b").val(questionObject[pointer].b);
+			$("#label_b").text(questionObject[pointer].b);
+			$("#c").val(questionObject[pointer].c);
+			$("#label_c").text(questionObject[pointer].c);
+			$("#d").val(questionObject[pointer].d);
+			$("#label_d").text(questionObject[pointer].d);
+		}
+		
+		function nextQuestion(){
+			if(pointer == questionObject.length-1){
+			    var ok = confirm("Proceed to end quiz, or cancel to review");
+				if(ok){
+				   endQuiz();
+				}
+			}
+			else{
+			    
+				++pointer;
+				loadQuestion();
+				updateSelection()
+			}
+		}
+		
+		function prevQuestion(){
+			if(pointer == 0){
+			    $("#btnPrev").prop("disabled",true);
+			}
+			else{
+			    $("#btnPrev").prop("disabled",false);
+				--pointer;
+				loadQuestion();
+				updateSelection()
+			}
+		}
+		
+		function saveAnswer(choice){
+		   questionObject[pointer].selected = choice;
+		   console.log(JSON.stringify(questionObject));
+		}
+		
+		function endQuiz(){
+		   
+		   for(var question in questionObject){
+				
+				if(questionObject[question].ans == questionObject[question].selected){
+					score += 1;
+				}
+		   }
+		   
+		   var percentage = (score / questionObject.length) * 100;
+		   
+		   var message = "";
+		   if(percentage >= 50){
+		     message = "Congratulation!!! You passed... ";
+		   }else{
+		     message = "Keep up the effort, better luck next time";
+		   }
+		   
+		   $("#msg").html(message);
+		   $("#score").html("Score : " + percentage + "%");
+		   $("#QuizModal").modal();
+		   
+		   isScoreHigher(percentage);
+		   
+		   console.log(score);
+		   score = 0;
+		   pointer = 0;
+		   clear();
+		   loadQuestion();
+		}
+		
+		function clear(){
+		  for(var question in questionObject){
+				
+			  questionObject[question].selected = "";
+		   }
+		   
+		   $(".options").each(function(){
+		    $(this).prop("checked",false)
+		   })
+		}
+		
+		function updateSelection(){
+			
+			if(questionObject[pointer].selected && questionObject[pointer].selected != ""){
+				$(".options").each(function(){
+				    if(questionObject[pointer].selected == $(this).val())
+					$(this).prop("checked",true)
+				})
+			}
+			else{
+				$(".options").each(function(){
+				$(this).prop("checked",false)
+			})
+			}
+		}
+		
+		function updateBoard(new_score){
+		  
+		  
+			var userscore = {name : username, score : new_score, email : email};
+			firebase.database().ref("scores/" + username).update(userscore);
+			getScoreBoard();
+		  
+		  
+		  
+		}
+		
+		function getScoreBoard(){
+		
+			firebase.database().ref("scores").once("value").then(function(snapShot){
+				if(snapShot.val() !== null){
+			
+			firebase.database().ref("scores").orderByChild("score").on("value",function(snapShot){
+				console.log("scores : " + JSON.stringify(snapShot.val()));
+				
+				var scores = snapShot.val();
+				$("#leaderBoard").html("");
+				
+				if(scores != null || scores != ""){
+					for(var key in scores){
+						var item = '<li class="list-group-item">Name : ' + scores[key].name + " <br/>Score : " + scores[key].score + '%</li>'
+						$("#leaderBoard").append(item);
+					}
+				}
+			});
+			}
+			});
+		}
+		
+		function isScoreHigher(score_num){
+		   
+		   firebase.database().ref("scores").once("value").then(function(snapShot){
+				if(snapShot.val() !== null){
+		   firebase.database().ref("scores/"+username).once("value").then(function(snapShot){
+				//console.log("New score : " + score_num + " old score" + snapShot.val().score);
+				 if( snapShot.val() == null ){
+				     updateBoard(score_num);
+				 }
+				 else if(score_num > snapShot.val().score){
+					updateBoard(score_num);
+				 }
+				 
+			});
+		   }
+		   else{
+		     updateBoard(score_num);
+		   }
+		 });
+		}
+		
+		
+	
+	</script>
+</body>
+</html>
