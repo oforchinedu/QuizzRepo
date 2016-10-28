@@ -17,5 +17,5 @@
   * To retrieve scores
   
 # Front End Dependencies
-  * HTML and Bootsrap: to display questions, answers and userboard
+  * HTML and Bootsrap: to display questions, answers and leader board
   * Javascript
