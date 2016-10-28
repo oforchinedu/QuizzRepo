@@ -11,9 +11,10 @@
 # Dependencies
 
 # Back End Dependencies
-* This app totally depends on firbase for:
-  * To authenticate
+* This app totally depends on firbase
+  * To authenticate users
   * To retrieve questions
+  * To retrieve scores
   
 # Front End Dependencies
   * HTML and Bootsrap: to display questions, answers and userboard
